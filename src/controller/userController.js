@@ -8,28 +8,18 @@ const User = require("../common/entity/UserEntity");
 
 const user = new User();
 
-// exports.getUsers = async (req, res, next) => {
-//   const data = await User.findAll({});
-//   let users = [];
-//   data.forEach((element) => {
-//     //delete element.dataValues["password"];
-//     users.push(element.dataValues);
-//   });
-//   const response = new ResponseModel({ contents: users });
-//   res.status(STATUS_CODE.OK).send(response);
-// };
+exports.getUsers = async (req, res, next) => {
+  const data = await user.findAll({});
+  res.status(STATUS_CODE.OK).send({ users: data });
+};
 
-// exports.create = async ({ email, password, full_name }) => {
-//   const create = await User.create({
-//     email,
-//     password,
-//     full_name,
-//     current_log: 0,
-//     roles: JSON.stringify(["USER"]),
-//   });
-//   const user = await find({ email, password });
-//   return user;
-// };
+exports.create = async ({ email, password, full_name }) => {
+  await user.insert([[email, password, full_name, 0]]);
+  const found = await user.findOne({
+    where: [`email='${email}'`, `password='${password}'`],
+  });
+  return found;
+};
 
 exports.setToken = async ({ email, password, currentLog }) => {
   user.update({
@@ -38,24 +28,12 @@ exports.setToken = async ({ email, password, currentLog }) => {
   });
   return true;
 };
-// exports.isExits = async ({ email }) => {
-//   const num = await User.count({
-//     where: {
-//       email,
-//     },
-//   });
-//   return num;
-// };
-
-// const find = async (query) => {
-//   const found = await User.findOne({
-//     where: { ...query },
-//   });
-//   if (!found) return null;
-//   const user = found?.dataValues;
-//   delete user["password"];
-//   return user;
-// };
+exports.isExits = async ({ email }) => {
+  const num = await user.isExist({
+    where: [`email='${email}'`],
+  });
+  return num;
+};
 
 exports.getOne = async (query) => {
   const found = await user.findOne({

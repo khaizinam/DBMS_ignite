@@ -11,7 +11,7 @@ const { STATUS_CODE } = require("../constants/item.constants");
  */
 const signToken = async (payload) => {
   const token = await jwt.sign(
-    { id: payload.id, email: payload.email, current_log: payload.current_log },
+    { id: payload.id, email: payload.email, currentLog: payload.currentLog },
     process.env.JWT_SECRET,
     {
       expiresIn: process.env.JWT_EXPIRES_IN,
@@ -54,7 +54,7 @@ exports.signup = async (req, res, next) => {
       );
   }
   const isExits = await userController.isExits({ email });
-  if (isExits > 0) {
+  if (isExits) {
     return res
       .status(400)
       .send(new ErrorMessage(MESSAGE_CONST.IS_EXISTED.code, ["Email", email]));
@@ -149,10 +149,10 @@ exports.protect = async (req, res, next) => {
           );
       } else {
         // 3) Check if user still exists
-        const currentUser = await userController.getOne({
-          id: userToken.id,
-          email: userToken.email,
-        });
+        const currentUser = await userController.getOne([
+          `id='${userToken.id}'`,
+          `email='${userToken.email}'`,
+        ]);
 
         if (!currentUser) {
           // not found user in db
@@ -165,8 +165,7 @@ exports.protect = async (req, res, next) => {
             );
         } else {
           if (
-            parseInt(currentUser.current_log) !==
-            parseInt(userToken.current_log)
+            parseInt(currentUser.currentLog) !== parseInt(userToken.currentLog)
           ) {
             // old token
             return res
@@ -215,10 +214,10 @@ exports.initPermission = async (req, res, next) => {
           );
       } else {
         // 3) Check if user still exists
-        const currentUser = await userController.getOne({
-          id: userToken.id,
-          email: userToken.email,
-        });
+        const currentUser = await userController.getOne([
+          `id='${userToken.id}'`,
+          `email='${userToken.email}'`,
+        ]);
 
         if (!currentUser) {
           // not found user in db
@@ -231,15 +230,17 @@ exports.initPermission = async (req, res, next) => {
             );
         } else {
           if (
-            parseInt(currentUser.current_log) !==
-            parseInt(userToken.current_log)
+            parseInt(currentUser.currentLog) !== parseInt(userToken.currentLog)
           ) {
             // old token
             return res
               .status(STATUS_CODE.TOKEN_ERR)
               .send(new ErrorMessage(MESSAGE_CONST.EXPIRED.code, ["API"]));
-          } else
+          } else {
+            delete currentUser?.password;
+            delete currentUser?.createAt;
             return res.status(200).send(new ResponseModel({ ...currentUser }));
+          }
         }
       }
     } catch (error) {
