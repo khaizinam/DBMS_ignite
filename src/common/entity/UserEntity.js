@@ -33,5 +33,5 @@ module.exports = class User extends IgniteBase {
   delete
   deleteById
   */
-  // Some function
+  // Some function here------------------------
 };
