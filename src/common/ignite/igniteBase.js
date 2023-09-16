@@ -395,11 +395,6 @@ module.exports = class IgniteBase {
   }
 
   /* --------------------------------FUNCTION-----------------------------------*/
-  /*
-   * create property from input object
-   * @param prop : { any : any }
-   * @param label : string
-   */
   createProperty(prop, label) {
     return {
       name: prop?.name ? prop.name : label,
@@ -414,9 +409,7 @@ module.exports = class IgniteBase {
     });
     return cols.join(", ");
   }
-  /*
-   * get all properties of this entity
-   */
+
   getProps() {
     const props = [];
     this.properties.forEach((prop) => {
@@ -424,28 +417,16 @@ module.exports = class IgniteBase {
     });
     return props;
   }
-  /*
-   * print all properties of this entity
-   */
   printProps() {
     this.properties.forEach((prop) => {
       console.log(`${prop} :`, this[prop]);
     });
   }
 
-  /*
-   * return columns of table
-   * parse to 'name' AS 'label'
-   * @param cols : string | { name : string , label : string | null }[]
-   */
   getColNM(col) {
     return col.name;
   }
 
-  /*
-   * return columns of table
-   * @param cols : string | {name : string , label : string }[]
-   */
   joinColumn(cols) {
     if (Array.isArray(cols)) {
       const arr = [];
@@ -457,10 +438,6 @@ module.exports = class IgniteBase {
     return "*";
   }
 
-  /*
-   * return query
-   * @param where : [] | {col : string , op:string , param:string = null}[]
-   */
   getQuery(where) {
     // config show where {col , op , param }
     if (where === undefined) return "";
@@ -474,12 +451,7 @@ module.exports = class IgniteBase {
     }
     return "";
   }
-  /*
-   * SELECT single table
-   * @param tableCols : string | {name : string , label : string }
-   * @param tableNM : string
-   * @param where : { string } []
-   */
+
   createSQLfind(param = { columns, where, orderBy, limit }) {
     let columns;
     if (!param?.columns) {
