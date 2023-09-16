@@ -25,12 +25,14 @@ module.exports = class User extends IgniteBase {
   }
   // hàm có sẵn
   /*
-  insert
   createTable
+  insert
   update
   findOne
+  findOneById
   findAll
   delete
+  deleteById
   */
   // Some function
 };

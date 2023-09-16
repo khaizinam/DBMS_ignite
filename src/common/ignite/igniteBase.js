@@ -49,6 +49,32 @@ module.exports = class IgniteBase {
     }
   }
   /**
+   * DELETE
+   * @param {*} param
+   * @returns
+   */
+  async deleteById(id) {
+    const igniteClient = new IgniteClient(this.onStateChanged.bind(this));
+
+    try {
+      await igniteClient.connect(new IgniteClientConfiguration(this.ENDPOINT));
+      const cache = await igniteClient.getOrCreateCache(
+        this._CACHE,
+        new CacheConfiguration().setSqlSchema(this._SCHEMA)
+      );
+      const query = `DELETE FROM ${this._name}
+        WHERE id='${id}';`;
+      //
+      (await cache.query(new SqlFieldsQuery(query))).getAll();
+      return true;
+    } catch (err) {
+      console.log(err.message);
+      return false;
+    } finally {
+      igniteClient.disconnect();
+    }
+  }
+  /**
    * UPDATE
    * @param {*} param
    * @returns
@@ -162,6 +188,45 @@ module.exports = class IgniteBase {
       );
       let result;
       param.limit = "LIMIT 1";
+      const { query, columns } = await this.createSQLfind(param);
+      const sqlFieldsCursor = await cache.query(
+        new SqlFieldsQuery(query).setPageSize(200)
+      );
+      const e = await sqlFieldsCursor.getValue();
+      if (e !== null) {
+        const o = {};
+        columns.forEach((key, index) => {
+          o[key.label] = e[index];
+        });
+        result = o;
+      }
+      return result;
+    } catch (err) {
+      console.log(err.message);
+      return null;
+    } finally {
+      igniteClient.disconnect();
+    }
+  }
+  /**
+   * SELECT
+   * @param {*} param
+   * @returns
+   */
+  async findOneById(id) {
+    const igniteClient = new IgniteClient(this.onStateChanged.bind(this));
+
+    try {
+      await igniteClient.connect(new IgniteClientConfiguration(this.ENDPOINT));
+      const cache = await igniteClient.getOrCreateCache(
+        this._CACHE,
+        new CacheConfiguration().setSqlSchema(this._SCHEMA)
+      );
+      let result;
+      const param = {
+        where: [`id='${id}'`],
+        limit: "LIMIT 1",
+      };
       const { query, columns } = await this.createSQLfind(param);
       const sqlFieldsCursor = await cache.query(
         new SqlFieldsQuery(query).setPageSize(200)
