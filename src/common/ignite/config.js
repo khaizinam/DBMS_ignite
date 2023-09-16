@@ -1,6 +1,5 @@
 const development = {
-  host: process.env.HOST,
-  username: process.env.NAME,
-  password: process.env.PASS,
+  endpoint: process.env.ENDPOINT,
+  cache: process.env.CACHE,
 };
 module.exports = { development };
