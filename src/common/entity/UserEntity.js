@@ -23,8 +23,7 @@ module.exports = class User extends IgniteBase {
     // call constructor từ IgniteBase
     super(name, _sql);
   }
-  // hàm có sẵn
-  /*
+  /* hàm có sẵn
   createTable
   insert
   update
