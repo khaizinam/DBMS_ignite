@@ -60,8 +60,25 @@ app.get("/create-table", async (req, res, next) => {
   try {
     await user.createTable();
     await user.insert([
-      ["Nguyen Huu Khai", "123", "khaizinam@gmail.com", "0846141788", 0],
-      ["Nguyen Huu Khai 2", "123", "khaizinam12@gmail.com", "0846141788", 0],
+      {
+        id: "123",
+        data: [
+          "Nguyen Huu Khai",
+          "123",
+          "khaizinam@gmail.com",
+          "0846141788",
+          0,
+        ],
+      },
+      {
+        data: [
+          "Nguyen Huu Khai 2",
+          "123",
+          "khaizinam12@gmail.com",
+          "0846141788",
+          0,
+        ],
+      },
     ]);
 
     res.send({ message: "tạo table thành công!" });

@@ -114,15 +114,14 @@ module.exports = class IgniteBase {
         this._CACHE,
         new CacheConfiguration().setSqlSchema(this._SCHEMA)
       );
-
       const columns = await this.createColum();
 
       let sql = `DROP TABLE IF EXISTS ${this._name};`;
       (await cache.query(new SqlFieldsQuery(sql))).getAll();
       // console.log(sql);
-      sql = `CREATE TABLE IF NOT EXISTS\n${this._name}\n( ${columns} );`;
+      sql = `CREATE TABLE IF NOT EXISTS\n${this._name}\n( ${columns} )WITH "template=partitioned, backups=1, CACHE_NAME=Country"`;
       (await cache.query(new SqlFieldsQuery(sql))).getAll();
-      // console.log(sql);
+      await cache.put("users", { id: 1 });
       return true;
     } catch (err) {
       console.log(err.message);
@@ -199,6 +198,11 @@ module.exports = class IgniteBase {
           o[key.label] = e[index];
         });
         result = o;
+      }
+      const a = await cache.get("users");
+      for (let fieldName of a.getFieldNames()) {
+        const fieldValue = await a.getField(fieldName);
+        console.log(fieldName, fieldValue);
       }
       return result;
     } catch (err) {
@@ -343,16 +347,30 @@ module.exports = class IgniteBase {
       for (let i = 0; i < data.length; i++) {
         let id;
         let val;
-        do {
-          id = crypto.randomUUID();
+        if (!data[i]?.id) {
+          do {
+            id = crypto.randomUUID();
+            val = await this.isExist({ where: [`id='${id}'`] });
+          } while (val);
+          const timeStamp = new Date().getTime();
+          (
+            await cache.query(
+              entityQuery.setArgs(id, timeStamp, ...data[i].data)
+            )
+          ).getAll();
+        } else {
+          id = data[i].id;
           val = await this.isExist({ where: [`id='${id}'`] });
-        } while (val);
-        const timeStamp = new Date().getTime();
-        (
-          await cache.query(entityQuery.setArgs(id, timeStamp, ...data[i]))
-        ).getAll();
+          if (!val) {
+            const timeStamp = new Date().getTime();
+            (
+              await cache.query(
+                entityQuery.setArgs(id, timeStamp, ...data[i].data)
+              )
+            ).getAll();
+          }
+        }
       }
-
       return true;
     } catch (err) {
       console.log(err.message);
