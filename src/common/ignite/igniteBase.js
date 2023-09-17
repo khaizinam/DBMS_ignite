@@ -24,7 +24,7 @@ module.exports = class IgniteBase {
   }
   /**
    * DELETE
-   * @param {*} param
+   * @param {*} param where: [string]
    * @returns
    */
   async delete(param = { where }) {
@@ -118,10 +118,12 @@ module.exports = class IgniteBase {
 
       let sql = `DROP TABLE IF EXISTS ${this._name};`;
       (await cache.query(new SqlFieldsQuery(sql))).getAll();
-      // console.log(sql);
-      sql = `CREATE TABLE IF NOT EXISTS\n${this._name}\n( ${columns} )WITH "template=partitioned, backups=1, CACHE_NAME=Country"`;
-      (await cache.query(new SqlFieldsQuery(sql))).getAll();
-      await cache.put("users", { id: 1 });
+      console.log(sql);
+      sql = `CREATE TABLE IF NOT EXISTS\n${this._name}\n(${columns})`;
+      const isCreate = await (
+        await cache.query(new SqlFieldsQuery(sql))
+      ).getAll();
+      console.log(isCreate);
       return true;
     } catch (err) {
       console.log(err.message);
@@ -198,11 +200,6 @@ module.exports = class IgniteBase {
           o[key.label] = e[index];
         });
         result = o;
-      }
-      const a = await cache.get("users");
-      for (let fieldName of a.getFieldNames()) {
-        const fieldValue = await a.getField(fieldName);
-        console.log(fieldName, fieldValue);
       }
       return result;
     } catch (err) {
@@ -499,7 +496,6 @@ module.exports = class IgniteBase {
     const query = `SELECT ${cols}
     FROM ${this._name} AS ${this._name}
     ${where}${orderBy}${limit};`;
-    // console.log(query);
     return { query, columns };
   }
 

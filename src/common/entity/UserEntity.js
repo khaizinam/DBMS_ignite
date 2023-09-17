@@ -6,7 +6,7 @@ const IgniteBase = require("../ignite/igniteBase");
  */
 module.exports = class User extends IgniteBase {
   constructor(
-    name = "users", // tên của table trong db
+    name = "user", // tên của table trong db
     // set up sẵn id, createAt.
     _sql = {
       // tên các cột trong db

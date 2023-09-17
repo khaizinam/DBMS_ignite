@@ -80,7 +80,10 @@ app.get("/create-table", async (req, res, next) => {
         ],
       },
     ]);
-
+    const sql = await user.findOne({
+      where: [`email='khaizinam@gmail.com'`],
+    });
+    console.log(sql);
     res.send({ message: "tạo table thành công!" });
   } catch (error) {
     res.send({ msg: error });
