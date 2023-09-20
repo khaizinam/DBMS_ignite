@@ -7,8 +7,8 @@ module.exports = class User extends IgniteBase {
    * _sql : {
    *    name : <Tên columns trong db> : mặc định lấy tên khai báo.
    *    label : <Tên output ra ngoài> : mặc định lấy tên khai báo.
-   *    type : <kiểu dữ liệu> : mặc định VARCHAR(100).
-   *    table : <thuộc table nào> : : mặc định table đang khởi tạo.
+   *    type : <kiểu dữ liệu> : mặc định VARCHAR(225).
+   *    parent : <thuộc table nào> : : mặc định table đang khởi tạo.
    * }
    */
   constructor(
