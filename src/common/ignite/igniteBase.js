@@ -11,11 +11,17 @@ module.exports = class IgniteBase {
     this._CACHE = development.cache;
     this._name = name;
     this.properties = ["id", "createAt"];
-    this.id = { name: "id", label: "id", type: "VARCHAR PRIMARY KEY" };
+    this.id = {
+      name: "id",
+      label: "id",
+      type: "VARCHAR PRIMARY KEY",
+      parent: name,
+    };
     this.createAt = {
       name: "create_at",
       label: "createAt",
       type: "DOUBLE",
+      parent: name,
     };
     Object.keys(_sql).forEach((e) => {
       this.properties.push(e);
@@ -190,6 +196,7 @@ module.exports = class IgniteBase {
       let result;
       param.limit = "LIMIT 1";
       const { query, columns } = await this.createSQLfind(param);
+      console.log(query);
       const sqlFieldsCursor = await cache.query(
         new SqlFieldsQuery(query).setPageSize(200)
       );
@@ -415,6 +422,7 @@ module.exports = class IgniteBase {
       name: prop?.name ? prop.name : label,
       label: prop?.label ? prop.label : label,
       type: prop?.type ? prop.type : "VARCHAR(225)",
+      parent: this._name,
     };
   }
   createColum() {
@@ -446,7 +454,7 @@ module.exports = class IgniteBase {
     if (Array.isArray(cols)) {
       const arr = [];
       cols.forEach((item) => {
-        arr.push(`${item.name} AS ${item.label}`);
+        arr.push(`${item.parent}.${item.name} AS ${item.label}`);
       });
       return arr.join(", ");
     }
@@ -466,7 +474,12 @@ module.exports = class IgniteBase {
     }
     return "";
   }
-
+  /**
+   *
+   * @param {*} param { columns, where, orderBy, limit }
+   * columns array [ ] {name : string, label : string , parent: string}
+   * @returns
+   */
   createSQLfind(param = { columns, where, orderBy, limit }) {
     let columns;
     if (!param?.columns) {
