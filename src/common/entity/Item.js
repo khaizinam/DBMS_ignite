@@ -6,10 +6,8 @@ const IgniteBase = require("../ignite/igniteBase");
  */
 module.exports = class Products extends IgniteBase {
   constructor(
-    name = "products", // tên của table trong db
-    // set up sẵn id, createAt.
+    name = "products",
     _sql = {
-      // tên các cột trong db
       name: { type: "VARCHAR(200)" },
       categoryId: {
         name: "category_id",

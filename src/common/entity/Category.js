@@ -9,7 +9,6 @@ module.exports = class Category extends IgniteBase {
     name = "category", // tên của table trong db
     // set up sẵn id, createAt.
     _sql = {
-      // tên các cột trong db
       name: { type: "VARCHAR(200)" },
     }
   ) {

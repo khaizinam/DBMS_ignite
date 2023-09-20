@@ -1,15 +1,20 @@
 const IgniteBase = require("../ignite/igniteBase");
-/**
- * name : Tên ứng với trong db, không set thì lấy mặc định theo biến đặt.
- * label : tên xuất ra mong muốn, không set thì lấy mặc định theo biến đặt.
- * type : kiểu dữ liệu của SQL.
- */
 module.exports = class User extends IgniteBase {
+  /**
+   *
+   * @param name : Tên định danh table khởi tạo.
+   * @param _sql : khởi tạo các fields columns.
+   * _sql : {
+   *    name : <Tên columns trong db> : mặc định lấy tên khai báo.
+   *    label : <Tên output ra ngoài> : mặc định lấy tên khai báo.
+   *    type : <kiểu dữ liệu> : mặc định VARCHAR(100).
+   *    table : <thuộc table nào> : : mặc định table đang khởi tạo.
+   * }
+   */
   constructor(
     name = "user", // tên của table trong db
-    // set up sẵn id, createAt.
+    // tên các cột trong db
     _sql = {
-      // tên các cột trong db
       fullName: { name: "full_name", type: "VARCHAR(200)" },
       password: {},
       email: {},
@@ -20,7 +25,7 @@ module.exports = class User extends IgniteBase {
       currentLog: { name: "current_log", type: "DOUBLE" },
     }
   ) {
-    // call constructor từ IgniteBase
+    /* required super call */
     super(name, _sql);
   }
   /* hàm có sẵn
