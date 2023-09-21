@@ -8,7 +8,7 @@ const helmet = require("helmet");
 
 const app = express();
 const userRouter = require("./userRoutes");
-const User = require("../common/entity/UserEntity");
+const User = require("../common/entity/User");
 //
 app.use(cors());
 app.use(helmet());
@@ -43,12 +43,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 //
 
-const user = new User();
+const DB = require("../common/entity/index");
+const user = DB.entities["user"];
 app.get("/", async (req, res, next) => {
   try {
-    const sql = await user.findOne({
-      where: [`email='khaizinam@gmail.com'`],
-    });
+    await DB.init();
+    const sql = await user.findAll({});
     res.send({ sql });
   } catch (error) {
     res.send({ msg: error });
@@ -58,33 +58,8 @@ app.get("/", async (req, res, next) => {
 
 app.get("/create-table", async (req, res, next) => {
   try {
-    // await user.createTable();
-    // await user.insert([
-    //   {
-    //     id: "123",
-    //     data: [
-    //       "Nguyen Huu Khai",
-    //       "123",
-    //       "khaizinam@gmail.com",
-    //       "0846141788",
-    //       0,
-    //     ],
-    //   },
-    //   {
-    //     data: [
-    //       "Nguyen Huu Khai 2",
-    //       "123",
-    //       "khaizinam12@gmail.com",
-    //       "0846141788",
-    //       0,
-    //     ],
-    //   },
-    // ]);
-    const sql = await user.findOne({
-      where: [`email='khaizinam@gmail.com'`],
-    });
-    console.log(sql);
-    res.send({ message: "tạo table thành công!" });
+    const msg = await DB.init();
+    res.send({ msg });
   } catch (error) {
     res.send({ msg: error });
   }

@@ -42,4 +42,22 @@ module.exports = class User extends IgniteBase {
   deleteById
   */
   // Some function here------------------------
+  async init() {
+    await this.insert([
+      {
+        id: "1",
+        data: [
+          "Nguyen Huu Khai",
+          "123",
+          "khaizinam@gmail.com",
+          "0846141788",
+          0,
+        ],
+      },
+      {
+        id: "2",
+        data: ["Nguyễn Văn A", "123", "admin@gmail.com", "0846141788", 0],
+      },
+    ]);
+  }
 };

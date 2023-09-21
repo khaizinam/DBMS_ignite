@@ -3,7 +3,7 @@ const { ResponseModel } = require("../model/commonResponse");
 // const { formatString } = require("../feature/formatString");
 // const db = require("../db/models/index");
 // const User = db.User;
-const User = require("../common/entity/UserEntity");
+const User = require("../common/entity/User");
 /*---------------------------------*/
 
 const user = new User();

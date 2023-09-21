@@ -16,12 +16,14 @@ module.exports = class IgniteBase {
       label: "id",
       type: "VARCHAR PRIMARY KEY",
       parent: name,
+      size: "",
     };
     this.createAt = {
       name: "create_at",
       label: "createAt",
       type: "DOUBLE",
       parent: name,
+      size: "",
     };
     Object.keys(_sql).forEach((e) => {
       this.properties.push(e);
@@ -42,8 +44,9 @@ module.exports = class IgniteBase {
         this._CACHE,
         new CacheConfiguration().setSqlSchema(this._SCHEMA)
       );
-      const query = `DELETE FROM ${this._name}
-      WHERE ${param.where.join(" AND ")};`;
+      const query = `DELETE FROM ${this._name} WHERE ${param.where.join(
+        " AND "
+      )};`;
       //
       (await cache.query(new SqlFieldsQuery(query))).getAll();
       return true;
@@ -68,8 +71,7 @@ module.exports = class IgniteBase {
         this._CACHE,
         new CacheConfiguration().setSqlSchema(this._SCHEMA)
       );
-      const query = `DELETE FROM ${this._name}
-        WHERE id='${id}';`;
+      const query = `DELETE FROM ${this._name} WHERE id='${id}';`;
       //
       (await cache.query(new SqlFieldsQuery(query))).getAll();
       return true;
@@ -94,9 +96,9 @@ module.exports = class IgniteBase {
         this._CACHE,
         new CacheConfiguration().setSqlSchema(this._SCHEMA)
       );
-      const query = `UPDATE ${this._name}
-      SET ${param.values.join(",")}
-      WHERE ${param.where.join(" AND ")}`;
+      const query = `UPDATE ${this._name}\nSET ${param.values.join(
+        ","
+      )}\nWHERE ${param.where.join(" AND ")};`;
       //
       (await cache.query(new SqlFieldsQuery(query))).getAll();
       return true;
@@ -125,15 +127,21 @@ module.exports = class IgniteBase {
       let sql = `DROP TABLE IF EXISTS ${this._name};`;
       (await cache.query(new SqlFieldsQuery(sql))).getAll();
       console.log(sql);
-      sql = `CREATE TABLE IF NOT EXISTS\n${this._name}\n(${columns})`;
+      sql = `CREATE TABLE IF NOT EXISTS ${this._name} (${columns});`;
+      console.log(sql);
       const isCreate = await (
         await cache.query(new SqlFieldsQuery(sql))
       ).getAll();
-      console.log(isCreate);
-      return true;
+      // console.log(`created table ${this._name} : ${isCreate[0][0] === 0}`);
+      return {
+        success: true,
+        msg: `Created table name ${this._name} : ${
+          isCreate[0][0] === 0 ? "success" : "fail"
+        }`,
+      };
     } catch (err) {
       console.log(err.message);
-      return false;
+      return { success: false, msg: `create false\nerror: ${err.message}` };
     } finally {
       igniteClient.disconnect();
     }
@@ -200,11 +208,11 @@ module.exports = class IgniteBase {
       const sqlFieldsCursor = await cache.query(
         new SqlFieldsQuery(query).setPageSize(200)
       );
-      const e = await sqlFieldsCursor.getValue();
-      if (e !== null) {
+      const cursor = await sqlFieldsCursor.getValue();
+      if (cursor !== null) {
         const o = {};
         columns.forEach((key, index) => {
-          o[key.label] = e[index];
+          o[key.label] = cursor[index];
         });
         result = o;
       }
@@ -239,11 +247,11 @@ module.exports = class IgniteBase {
       const sqlFieldsCursor = await cache.query(
         new SqlFieldsQuery(query).setPageSize(200)
       );
-      const e = await sqlFieldsCursor.getValue();
+      const cursor = await sqlFieldsCursor.getValue();
       if (e !== null) {
         const o = {};
         columns.forEach((key, index) => {
-          o[key.label] = e[index];
+          o[key.label] = cursor[index];
         });
         result = o;
       }
@@ -274,7 +282,7 @@ module.exports = class IgniteBase {
         new SqlFieldsQuery(
           `SELECT COUNT(*) FROM ${this._name} WHERE ${param.where.join(
             " AND "
-          )}`
+          )};`
         )
       );
       const count = await query.getValue();
@@ -343,9 +351,10 @@ module.exports = class IgniteBase {
       for (let i = 0; i < num_cols; i++) {
         value_columns.push("?");
       }
-      value_columns.join(", ");
+      value_columns = value_columns.join(", ");
 
-      const sql = `INSERT INTO\n${this._name} (${columns})\nVALUES(${value_columns})`;
+      const sql = `INSERT INTO\n${this._name} (${columns})\nVALUES(${value_columns});`;
+      // console.log(sql);
       const entityQuery = new SqlFieldsQuery(sql);
 
       for (let i = 0; i < data.length; i++) {
@@ -362,16 +371,31 @@ module.exports = class IgniteBase {
               entityQuery.setArgs(id, timeStamp, ...data[i].data)
             )
           ).getAll();
+          console.log(
+            `insert into ${this._name}: ${JSON.stringify({
+              id,
+              timeStamp,
+              ...data[i].data,
+            })}`
+          );
         } else {
-          id = data[i].id;
-          val = await this.isExist({ where: [`id='${id}'`] });
+          id = data[i].id; // get id from data
+          val = await this.isExist({ where: [`id='${id}'`] }); // check exits id in database
           if (!val) {
-            const timeStamp = new Date().getTime();
+            // save if not exits
+            const timeStamp = new Date().getTime(); // get new time
             (
               await cache.query(
                 entityQuery.setArgs(id, timeStamp, ...data[i].data)
               )
             ).getAll();
+            console.log(
+              `insert into ${this._name}: ${JSON.stringify({
+                id: id,
+                timeStamp: timeStamp,
+                data: data[i].data,
+              })}`
+            );
           }
         }
       }
@@ -476,6 +500,7 @@ module.exports = class IgniteBase {
     }
     return "";
   }
+  async init() {}
   /**
    *
    * @param {*} param { columns, where, orderBy, limit }
