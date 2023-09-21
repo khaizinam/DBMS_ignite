@@ -1,4 +1,5 @@
 const IgniteBase = require("../ignite/igniteBase");
+const DataType = require("../ignite/dataType");
 module.exports = class User extends IgniteBase {
   /**
    *
@@ -15,14 +16,14 @@ module.exports = class User extends IgniteBase {
     name = "user", // tên của table trong db
     // tên các cột trong db
     _sql = {
-      fullName: { name: "full_name", type: "VARCHAR(200)" },
-      password: {},
-      email: {},
+      fullName: { name: "full_name", type: DataType.VARCHAR },
+      password: { type: DataType.VARCHAR },
+      email: { type: DataType.VARCHAR },
       phoneNumber: {
         name: "phone_number",
-        type: "VARCHAR(13)",
+        type: DataType.VARCHAR,
       },
-      currentLog: { name: "current_log", type: "DOUBLE" },
+      currentLog: { name: "current_log", type: DataType.DOUBLE },
     }
   ) {
     /* required super call */

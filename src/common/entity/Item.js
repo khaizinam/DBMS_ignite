@@ -1,4 +1,5 @@
 const IgniteBase = require("../ignite/igniteBase");
+const DataType = require("../ignite/dataType");
 /**
  * name : Tên ứng với trong db, không set thì lấy mặc định theo biến đặt.
  * label : tên xuất ra mong muốn, không set thì lấy mặc định theo biến đặt.
@@ -8,24 +9,24 @@ module.exports = class Products extends IgniteBase {
   constructor(
     name = "products",
     _sql = {
-      name: { type: "VARCHAR(200)" },
+      name: { type: DataType.VARCHAR },
       categoryId: {
         name: "category_id",
         label: "categoryId",
-        type: "VARCHAR(200)",
+        type: DataType.VARCHAR,
       },
-      cost: { type: "DOUBLE" },
+      cost: { type: DataType.DOUBLE },
       sale: {
-        type: "DOUBLE",
+        type: DataType.DOUBLE,
       },
-      description: { type: "VARCHAR" },
-      image: { type: "VARCHAR" },
-      amounts: { type: "VARCHAR" },
-      rating: { type: "INT" },
+      description: { type: DataType.VARCHAR },
+      image: { type: DataType.VARCHAR },
+      amounts: { type: DataType.VARCHAR },
+      rating: { type: DataType.INT },
       shortDescription: {
         name: "short_description",
         label: "shortDescription",
-        type: "VARCHAR",
+        type: DataType.VARCHAR,
       },
     }
   ) {

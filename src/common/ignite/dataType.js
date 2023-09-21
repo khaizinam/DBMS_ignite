@@ -1,0 +1,17 @@
+module.exports = DataType = {
+  BOOLEAN: "BOOLEAN",
+  BIGINT: "BIGINT",
+  DECIMAL: "DECIMAL",
+  DOUBLE: "DOUBLE",
+  INT: "INT",
+  SMALLINT: "SMALLINT",
+  TINYINT: "TINYINT",
+  REAL: "REAL",
+  CHAR: "CHAR",
+  VARCHAR: "VARCHAR",
+  DATE: "DATE",
+  TIME: "TIME",
+  TIMESTAMP: "TIMESTAMP",
+  BINARY: "BINARY",
+  UUID: "UUID",
+};

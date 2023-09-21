@@ -1,4 +1,5 @@
 const IgniteBase = require("../ignite/igniteBase");
+const DataType = require("../ignite/dataType");
 /**
  * name : Tên ứng với trong db, không set thì lấy mặc định theo biến đặt.
  * label : tên xuất ra mong muốn, không set thì lấy mặc định theo biến đặt.
@@ -9,7 +10,7 @@ module.exports = class Category extends IgniteBase {
     name = "category", // tên của table trong db
     // set up sẵn id, createAt.
     _sql = {
-      name: { type: "VARCHAR(200)" },
+      name: { type: DataType.VARCHAR },
     }
   ) {
     // call constructor từ IgniteBase

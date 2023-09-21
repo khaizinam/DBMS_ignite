@@ -421,14 +421,16 @@ module.exports = class IgniteBase {
     return {
       name: prop?.name ? prop.name : label,
       label: prop?.label ? prop.label : label,
-      type: prop?.type ? prop.type : "VARCHAR(225)",
+      type: prop?.type ? prop.type : "VARCHAR",
+      size: prop?.size ? prop.size : "",
       parent: this._name,
     };
   }
   createColum() {
     const cols = [];
     this.properties.forEach((prop) => {
-      cols.push(`${this[prop].name} ${this[prop].type}`);
+      const size = this[prop].size === "" ? "" : `(${this[prop].size})`;
+      cols.push(`${this[prop].name} ${this[prop].type}${size}`);
     });
     return cols.join(", ");
   }
