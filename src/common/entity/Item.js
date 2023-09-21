@@ -21,8 +21,8 @@ module.exports = class Products extends IgniteBase {
       },
       description: { type: DataType.VARCHAR },
       image: { type: DataType.VARCHAR },
-      amounts: { type: DataType.VARCHAR },
-      rating: { type: DataType.INT },
+      amounts: { type: DataType.INT },
+      rating: { type: DataType.DOUBLE },
       shortDescription: {
         name: "short_description",
         label: "shortDescription",
@@ -44,4 +44,36 @@ module.exports = class Products extends IgniteBase {
   deleteById
   */
   // Some function here------------------------
+  async init() {
+    await this.insert([
+      {
+        id: "1",
+        data: [
+          "Quần hoa",
+          "1",
+          45000,
+          0.2,
+          "des",
+          "img",
+          1000,
+          5.0,
+          "short des",
+        ],
+      },
+      {
+        id: "2",
+        data: [
+          "Quần thổ cẩm",
+          "1",
+          60000,
+          0.15,
+          "des",
+          "img",
+          275,
+          4.5,
+          "short des",
+        ],
+      },
+    ]);
+  }
 };

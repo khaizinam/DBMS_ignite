@@ -32,7 +32,7 @@ module.exports = class Category extends IgniteBase {
     await this.insert([
       {
         id: "1",
-        data: ["Nến cây", "nen-cay"],
+        data: ["Quần", "quan"],
       },
       {
         id: "2",

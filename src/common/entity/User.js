@@ -19,12 +19,13 @@ module.exports = class User extends IgniteBase {
     _sql = {
       fullName: { name: "full_name", type: DataType.VARCHAR, size: 200 },
       password: { type: DataType.VARCHAR },
-      email: { type: DataType.VARCHAR, size: 100 },
+      username: { type: DataType.VARCHAR, size: 100 },
       phoneNumber: {
         name: "phone_number",
         type: DataType.VARCHAR,
         size: 14,
       },
+      role: { type: DataType.VARCHAR },
       currentLog: { name: "current_log", type: DataType.DOUBLE },
     }
   ) {
@@ -46,17 +47,11 @@ module.exports = class User extends IgniteBase {
     await this.insert([
       {
         id: "1",
-        data: [
-          "Nguyen Huu Khai",
-          "123",
-          "khaizinam@gmail.com",
-          "0846141788",
-          0,
-        ],
+        data: ["Nguyen Huu Khai", "123", "khaizinam", "0846141788", "USER", 0],
       },
       {
         id: "2",
-        data: ["Nguyễn Văn A", "123", "admin@gmail.com", "0846141788", 0],
+        data: ["Nguyễn Văn A", "123", "admin", "0846141788", "ADMIN", 0],
       },
     ]);
   }
