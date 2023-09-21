@@ -9,6 +9,7 @@ module.exports = class User extends IgniteBase {
    *    name : <Tên columns trong db> : mặc định lấy tên khai báo.
    *    label : <Tên output ra ngoài> : mặc định lấy tên khai báo.
    *    type : <kiểu dữ liệu> : mặc định VARCHAR(225).
+   *    size : <độ dài kiểu dữ liệu> : mặc định không set.
    *    parent : <thuộc table nào> : : mặc định table đang khởi tạo.
    * }
    */
@@ -16,12 +17,13 @@ module.exports = class User extends IgniteBase {
     name = "user", // tên của table trong db
     // tên các cột trong db
     _sql = {
-      fullName: { name: "full_name", type: DataType.VARCHAR },
+      fullName: { name: "full_name", type: DataType.VARCHAR, size: 200 },
       password: { type: DataType.VARCHAR },
-      email: { type: DataType.VARCHAR },
+      email: { type: DataType.VARCHAR, size: 100 },
       phoneNumber: {
         name: "phone_number",
         type: DataType.VARCHAR,
+        size: 14,
       },
       currentLog: { name: "current_log", type: DataType.DOUBLE },
     }
