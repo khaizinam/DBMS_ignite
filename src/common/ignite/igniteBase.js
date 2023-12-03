@@ -277,12 +277,14 @@ module.exports = class IgniteBase {
         this._CACHE,
         new CacheConfiguration().setSqlSchema(this._SCHEMA)
       );
-      let val = 0;
+
+      let whereCondition = "";
+      if (param?.where || param?.where.length > 0) {
+        whereCondition = ` WHERE ${param.where.join(" AND ")}`;
+      }
       const query = await cache.query(
         new SqlFieldsQuery(
-          `SELECT COUNT(*) FROM ${this._name} WHERE ${param.where.join(
-            " AND "
-          )};`
+          `SELECT COUNT(*) FROM ${this._name}${whereCondition};`
         )
       );
       const count = await query.getValue();
@@ -308,12 +310,13 @@ module.exports = class IgniteBase {
         this._CACHE,
         new CacheConfiguration().setSqlSchema(this._SCHEMA)
       );
-      let val = 0;
+      let whereCondition = "";
+      if (param?.where || param?.where.length > 0) {
+        whereCondition = ` WHERE ${param.where.join(" AND ")}`;
+      }
       const query = await cache.query(
         new SqlFieldsQuery(
-          `SELECT COUNT(*) FROM ${this._name} WHERE ${param.where.join(
-            " AND "
-          )}`
+          `SELECT COUNT(*) FROM ${this._name}${whereCondition};`
         )
       );
       const count = await query.getValue();

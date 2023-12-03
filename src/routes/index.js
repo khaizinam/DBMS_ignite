@@ -41,29 +41,9 @@ app.use("/api", limiter);
 app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-//
-
-const DB = require("../common/entity/index");
-const user = DB.entities["user"];
-app.get("/", async (req, res, next) => {
-  try {
-    await DB.init();
-    const sql = await user.findAll({});
-    res.send({ sql });
-  } catch (error) {
-    res.send({ msg: error });
-    console.log(error);
-  }
-});
-
-app.get("/create-table", async (req, res, next) => {
-  try {
-    const msg = await DB.init();
-    res.send({ msg });
-  } catch (error) {
-    res.send({ msg: error });
-  }
-});
+//------------------------------------
+const TableRoute = require("../routes/TableRoute");
+app.use("/table", TableRoute);
 app.use("/api/auth", userRouter);
 app.all("*", (req, res, next) => {
   res.status(400).send("Not found that url!");
