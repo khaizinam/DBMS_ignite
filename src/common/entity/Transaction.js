@@ -17,15 +17,12 @@ module.exports = class Transaction extends IgniteBase {
         label: "itemId",
         type: DataType.VARCHAR,
       },
-      cart_id: { name: "cart_id", label: "cartId", type: DataType.VARCHAR },
-      cost: { type: DataType.DOUBLE },
-      sale: {
-        type: DataType.DOUBLE,
-      },
+      cartId: { name: "cart_id", label: "cartId", type: DataType.VARCHAR },
+      price: { type: DataType.DOUBLE },
       timeBuy: { type: DataType.VARCHAR },
       purchaseDay: { type: DataType.VARCHAR },
       status: { type: DataType.VARCHAR },
-      amounts: { type: DataType.INT },
+      count: { type: DataType.INT },
     }
   ) {
     /* required super call */
@@ -46,11 +43,11 @@ module.exports = class Transaction extends IgniteBase {
     await this.insert([
       {
         id: "1",
-        data: ["1", "1", "1", 45000, 0.2, "00000", "00000", "1", 5],
+        data: ["1", "1", "1", 45000, "00000", "00000", "1", 5],
       },
       {
         id: "2",
-        data: ["1", "2", "1", 65000, 0.15, "00000", "00000", "1", 1],
+        data: ["1", "2", "1", 65000, "00000", "00000", "1", 1],
       },
     ]);
   }

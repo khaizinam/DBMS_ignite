@@ -9,25 +9,18 @@ module.exports = class Products extends IgniteBase {
   constructor(
     name = "products",
     _sql = {
-      name: { type: DataType.VARCHAR },
-      categoryId: {
-        name: "category_id",
-        label: "categoryId",
+      title: { type: DataType.VARCHAR },
+      price: { type: DataType.DOUBLE },
+      description: {
         type: DataType.VARCHAR,
       },
-      cost: { type: DataType.DOUBLE },
-      sale: {
-        type: DataType.DOUBLE,
+      category: {
+        type: DataType.VARCHAR,
       },
-      description: { type: DataType.VARCHAR },
+
       image: { type: DataType.VARCHAR },
-      amounts: { type: DataType.INT },
+      count: { type: DataType.INT },
       rating: { type: DataType.DOUBLE },
-      shortDescription: {
-        name: "short_description",
-        label: "shortDescription",
-        type: DataType.VARCHAR,
-      },
     }
   ) {
     /* required super call */
@@ -49,29 +42,25 @@ module.exports = class Products extends IgniteBase {
       {
         id: "1",
         data: [
-          "Quần hoa",
-          "1",
+          "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
           45000,
-          0.2,
-          "des",
-          "img",
-          1000,
-          5.0,
-          "short des",
+          "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
+          "Áo",
+          "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
+          120,
+          3.9,
         ],
       },
       {
         id: "2",
         data: [
-          "Quần thổ cẩm",
-          "1",
-          60000,
-          0.15,
-          "des",
-          "img",
-          275,
-          4.5,
-          "short des",
+          "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
+          45000,
+          "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
+          "Áo",
+          "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
+          120,
+          3.9,
         ],
       },
     ]);
