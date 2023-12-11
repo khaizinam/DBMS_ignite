@@ -40,6 +40,16 @@ exports.getProducts = async (req, res, next) => {
     res.status(200).send(result);
   }
 };
+exports.createProduct = async (req, res, next) => {
+  const { title, price, description, category, image, count, rating } =
+    req.body;
+  const rs = await products.insert([
+    { data: [title, price, description, category, image, count, rating] },
+  ]);
+  if (rs) res.status(200).send("sucess");
+  else res.status(500).send("fail");
+};
+
 exports.getOneProduct = async (req, res, next) => {
   const { id } = req.body;
 

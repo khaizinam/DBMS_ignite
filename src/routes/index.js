@@ -7,8 +7,6 @@ const cookieParser = require("cookie-parser");
 const helmet = require("helmet");
 
 const app = express();
-const userRouter = require("./userRoutes");
-const User = require("../common/entity/User");
 //
 app.use(cors());
 app.use(helmet());
