@@ -1,6 +1,3 @@
-const { STATUS_CODE } = require("../constants/item.constants");
-const { ResponseModel } = require("../model/commonResponse");
-// const { formatString } = require("../feature/formatString");
 // const db = require("../db/models/index");
 // const User = db.User;
 const User = require("../common/entity/User");
@@ -10,7 +7,7 @@ const user = new User();
 
 exports.getUsers = async (req, res, next) => {
   const data = await user.findAll({});
-  res.status(STATUS_CODE.OK).send({ users: data });
+  res.status(200).send({ users: data });
 };
 
 exports.create = async ({ email, password, full_name }) => {

@@ -1,8 +1,6 @@
-const { MESSAGE_CONST } = require("../constants/message.constants");
-const { STATUS_CODE } = require("../constants/item.constants");
 //------------------------------
 const DB = require("../common/entity/index");
-const PageModel = require("../model/pageModel");
+
 const user = DB.entities["user"];
 const products = DB.entities["products"];
 /**
@@ -14,9 +12,9 @@ const products = DB.entities["products"];
 exports.createTable = async (req, res, next) => {
   try {
     const msg = await DB.init();
-    res.status(STATUS_CODE.OK).send({ msg });
+    res.status(200).send({ msg });
   } catch (error) {
-    res.status(STATUS_CODE.INTERNAL_ERROR).send({ msg: error });
+    res.status(500).send({ msg: error });
   }
 };
 /**
@@ -28,18 +26,18 @@ exports.createTable = async (req, res, next) => {
 exports.getUserList = async (req, res, next) => {
   const result = await user.findAll({});
   if (!result) {
-    res.status(STATUS_CODE.NOT_FOUND).send({ message: "No data in db!" });
+    res.status(404).send([]);
   } else {
-    res.status(STATUS_CODE.OK).send(new PageModel(result));
+    res.status(200).send(result);
   }
 };
 
 exports.getProducts = async (req, res, next) => {
   const result = await products.findAll({});
   if (!result) {
-    res.status(STATUS_CODE.NOT_FOUND).send([]);
+    res.status(404).send([]);
   } else {
-    res.status(STATUS_CODE.OK).send(result);
+    res.status(200).send(result);
   }
 };
 exports.getOneProduct = async (req, res, next) => {
@@ -47,9 +45,9 @@ exports.getOneProduct = async (req, res, next) => {
 
   const result = await products.findOne({ where: [`id='${id}'`] });
   if (!result) {
-    res.status(STATUS_CODE.NOT_FOUND).send([]);
+    res.status(404).send([]);
   } else {
-    res.status(STATUS_CODE.OK).send(result);
+    res.status(200).send(result);
   }
 };
 exports.getProductByCategory = async (req, res, next) => {
@@ -57,8 +55,8 @@ exports.getProductByCategory = async (req, res, next) => {
 
   const result = await products.findAll({ where: [`category='${category}'`] });
   if (!result) {
-    res.status(STATUS_CODE.NOT_FOUND).send([]);
+    res.status(404).send([]);
   } else {
-    res.status(STATUS_CODE.OK).send(result);
+    res.status(200).send(result);
   }
 };

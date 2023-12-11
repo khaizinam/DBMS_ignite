@@ -43,8 +43,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 //------------------------------------
 const TableRoute = require("../routes/TableRoute");
+
 app.use("/", TableRoute);
-app.use("/api/auth", userRouter);
+
 app.all("*", (req, res, next) => {
   res.status(400).send("Not found that url!");
   next();
