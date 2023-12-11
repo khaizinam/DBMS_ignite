@@ -28,7 +28,7 @@ module.exports = class IgniteBase {
    */
   async delete(param = { where }) {
     const igniteClient = new IgniteClient(this.onStateChanged.bind(this));
-
+  }
   async createTable() {
     const igniteClient = new IgniteClient(this.onStateChanged.bind(this));
 
