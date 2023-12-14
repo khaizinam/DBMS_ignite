@@ -1,5 +1,6 @@
 const IgniteBase = require("../ignite/igniteBase");
 const DataType = require("../ignite/dataType");
+const dataJson = require("./data.json");
 /**
  * name : Tên ứng với trong db, không set thì lấy mặc định theo biến đặt.
  * label : tên xuất ra mong muốn, không set thì lấy mặc định theo biến đặt.
@@ -38,31 +39,19 @@ module.exports = class Products extends IgniteBase {
   */
   // Some function here------------------------
   async init() {
-    await this.insert([
-      {
-        id: "1",
+    await this.insert(
+      dataJson.map((item) => ({
+        id: item.id,
         data: [
-          "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
-          45000,
-          "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
-          "Áo",
-          "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
-          120,
-          3.9,
+          item.title,
+          item.price,
+          item.description,
+          item.category,
+          item.image,
+          item.rating.count,
+          item.rating.rate,
         ],
-      },
-      {
-        id: "2",
-        data: [
-          "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
-          45000,
-          "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
-          "Áo",
-          "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
-          120,
-          3.9,
-        ],
-      },
-    ]);
+      }))
+    );
   }
 };

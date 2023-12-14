@@ -40,6 +40,15 @@ exports.getProducts = async (req, res, next) => {
     res.status(200).send(result);
   }
 };
+
+exports.getProductsSearch = async (req, res, next) => {
+  const { seachModal } = req.body;
+  // if (!result) {
+  //   res.status(404).send([]);
+  // } else {
+  //   res.status(200).send(result);
+  // }
+};
 exports.createProduct = async (req, res, next) => {
   const { title, price, description, category, image, count, rating } =
     req.body;
