@@ -5,6 +5,10 @@ const CacheConfiguration = IgniteClient.CacheConfiguration;
 const SqlFieldsQuery = IgniteClient.SqlFieldsQuery;
 const crypto = require("crypto");
 const { development } = require("./config");
+const username = "khaiznam";
+const userPass = "khaizinam";
+const url =
+  "6adc1134-ca9e-4f4b-8b57-bd804428f060.nebula-shared-ap-southeast-1.nebula.gridgain.com:10800";
 module.exports = class IgniteBase {
   constructor(name, _sql) {
     this._SCHEMA = "PUBLIC";
@@ -38,9 +42,13 @@ module.exports = class IgniteBase {
    */
   async delete(param = { where }) {
     const igniteClient = new IgniteClient(this.onStateChanged.bind(this));
-
+    const igniteClientConfiguration = new IgniteClientConfiguration(url)
+      .setUserName(username)
+      .setUserName(userPass)
+      .setConnectionOptions(true);
     try {
-      await igniteClient.connect(new IgniteClientConfiguration(this.ENDPOINT));
+      // await igniteClient.connect(new IgniteClientConfiguration(this.ENDPOINT));
+      await igniteClient.connect(igniteClientConfiguration);
       const cache = await igniteClient.getOrCreateCache(
         this._CACHE,
         new CacheConfiguration().setSqlSchema(this._SCHEMA)
@@ -65,11 +73,9 @@ module.exports = class IgniteBase {
    */
   async deleteById(id) {
     const igniteClient = new IgniteClient(this.onStateChanged.bind(this));
-    const igniteClientConfiguration = new IgniteClientConfiguration(
-      "6adc1134-ca9e-4f4b-8b57-bd804428f060.nebula-shared-ap-southeast-1.nebula.gridgain.com:10800"
-    )
-      .setUserName("khaizinam")
-      .setPassword("khaizinam")
+    const igniteClientConfiguration = new IgniteClientConfiguration(url)
+      .setUserName(username)
+      .setUserName(userPass)
       .setConnectionOptions(true);
     try {
       // await igniteClient.connect(new IgniteClientConfiguration(this.ENDPOINT));
@@ -96,11 +102,9 @@ module.exports = class IgniteBase {
    */
   async update(param = { where, values }) {
     const igniteClient = new IgniteClient(this.onStateChanged.bind(this));
-    const igniteClientConfiguration = new IgniteClientConfiguration(
-      "6adc1134-ca9e-4f4b-8b57-bd804428f060.nebula-shared-ap-southeast-1.nebula.gridgain.com:10800"
-    )
-      .setUserName("khaizinam")
-      .setPassword("khaizinam")
+    const igniteClientConfiguration = new IgniteClientConfiguration(url)
+      .setUserName(username)
+      .setUserName(userPass)
       .setConnectionOptions(true);
     try {
       // await igniteClient.connect(new IgniteClientConfiguration(this.ENDPOINT));
@@ -128,11 +132,9 @@ module.exports = class IgniteBase {
    */
   async createTable() {
     const igniteClient = new IgniteClient(this.onStateChanged.bind(this));
-    const igniteClientConfiguration = new IgniteClientConfiguration(
-      "6adc1134-ca9e-4f4b-8b57-bd804428f060.nebula-shared-ap-southeast-1.nebula.gridgain.com:10800"
-    )
-      .setUserName("khaizinam")
-      .setPassword("khaizinam")
+    const igniteClientConfiguration = new IgniteClientConfiguration(url)
+      .setUserName(username)
+      .setUserName(userPass)
       .setConnectionOptions(true);
     try {
       // await igniteClient.connect(new IgniteClientConfiguration(this.ENDPOINT));
@@ -172,11 +174,9 @@ module.exports = class IgniteBase {
    */
   async findAll(param = { columns, where, orderBy, limit }) {
     const igniteClient = new IgniteClient(this.onStateChanged.bind(this));
-    const igniteClientConfiguration = new IgniteClientConfiguration(
-      "6adc1134-ca9e-4f4b-8b57-bd804428f060.nebula-shared-ap-southeast-1.nebula.gridgain.com:10800"
-    )
-      .setUserName("khaizinam")
-      .setPassword("khaizinam")
+    const igniteClientConfiguration = new IgniteClientConfiguration(url)
+      .setUserName(username)
+      .setUserName(userPass)
       .setConnectionOptions(true);
     try {
       // await igniteClient.connect(new IgniteClientConfiguration(this.ENDPOINT));
@@ -219,11 +219,9 @@ module.exports = class IgniteBase {
    */
   async findOne(param = { columns, where, limit }) {
     const igniteClient = new IgniteClient(this.onStateChanged.bind(this));
-    const igniteClientConfiguration = new IgniteClientConfiguration(
-      "6adc1134-ca9e-4f4b-8b57-bd804428f060.nebula-shared-ap-southeast-1.nebula.gridgain.com:10800"
-    )
-      .setUserName("khaizinam")
-      .setPassword("khaizinam")
+    const igniteClientConfiguration = new IgniteClientConfiguration(url)
+      .setUserName(username)
+      .setUserName(userPass)
       .setConnectionOptions(true);
     try {
       // await igniteClient.connect(new IgniteClientConfiguration(this.ENDPOINT));
@@ -262,11 +260,9 @@ module.exports = class IgniteBase {
    */
   async findOneById(id) {
     const igniteClient = new IgniteClient(this.onStateChanged.bind(this));
-    const igniteClientConfiguration = new IgniteClientConfiguration(
-      "6adc1134-ca9e-4f4b-8b57-bd804428f060.nebula-shared-ap-southeast-1.nebula.gridgain.com:10800"
-    )
-      .setUserName("khaizinam")
-      .setPassword("khaizinam")
+    const igniteClientConfiguration = new IgniteClientConfiguration(url)
+      .setUserName(username)
+      .setUserName(userPass)
       .setConnectionOptions(true);
     try {
       // await igniteClient.connect(new IgniteClientConfiguration(this.ENDPOINT));
@@ -307,11 +303,9 @@ module.exports = class IgniteBase {
    */
   async count(param = { where }) {
     const igniteClient = new IgniteClient(this.onStateChanged.bind(this));
-    const igniteClientConfiguration = new IgniteClientConfiguration(
-      "6adc1134-ca9e-4f4b-8b57-bd804428f060.nebula-shared-ap-southeast-1.nebula.gridgain.com:10800"
-    )
-      .setUserName("khaizinam")
-      .setPassword("khaizinam")
+    const igniteClientConfiguration = new IgniteClientConfiguration(url)
+      .setUserName(username)
+      .setUserName(userPass)
       .setConnectionOptions(true);
     try {
       // await igniteClient.connect(new IgniteClientConfiguration(this.ENDPOINT));
@@ -346,11 +340,9 @@ module.exports = class IgniteBase {
    */
   async isExist(param = { where }) {
     const igniteClient = new IgniteClient(this.onStateChanged.bind(this));
-    const igniteClientConfiguration = new IgniteClientConfiguration(
-      "6adc1134-ca9e-4f4b-8b57-bd804428f060.nebula-shared-ap-southeast-1.nebula.gridgain.com:10800"
-    )
-      .setUserName("khaizinam")
-      .setPassword("khaizinam")
+    const igniteClientConfiguration = new IgniteClientConfiguration(url)
+      .setUserName(username)
+      .setUserName(userPass)
       .setConnectionOptions(true);
     try {
       // await igniteClient.connect(new IgniteClientConfiguration(this.ENDPOINT));
@@ -384,11 +376,9 @@ module.exports = class IgniteBase {
    */
   async insert(data) {
     const igniteClient = new IgniteClient(this.onStateChanged.bind(this));
-    const igniteClientConfiguration = new IgniteClientConfiguration(
-      "6adc1134-ca9e-4f4b-8b57-bd804428f060.nebula-shared-ap-southeast-1.nebula.gridgain.com:10800"
-    )
-      .setUserName("khaizinam")
-      .setPassword("khaizinam")
+    const igniteClientConfiguration = new IgniteClientConfiguration(url)
+      .setUserName(username)
+      .setUserName(userPass)
       .setConnectionOptions(true);
     try {
       // await igniteClient.connect(new IgniteClientConfiguration(this.ENDPOINT));
@@ -472,11 +462,9 @@ module.exports = class IgniteBase {
    */
   async selectByQuery(query) {
     const igniteClient = new IgniteClient(this.onStateChanged.bind(this));
-    const igniteClientConfiguration = new IgniteClientConfiguration(
-      "6adc1134-ca9e-4f4b-8b57-bd804428f060.nebula-shared-ap-southeast-1.nebula.gridgain.com:10800"
-    )
-      .setUserName("khaizinam")
-      .setPassword("khaizinam")
+    const igniteClientConfiguration = new IgniteClientConfiguration(url)
+      .setUserName(username)
+      .setUserName(userPass)
       .setConnectionOptions(true);
     try {
       // await igniteClient.connect(new IgniteClientConfiguration(this.ENDPOINT));
