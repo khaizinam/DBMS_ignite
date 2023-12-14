@@ -3,15 +3,10 @@ const DataType = require("../ignite/dataType");
 /**
  * title : lịch sử mua hàng.
  */
-module.exports = class Transaction extends IgniteBase {
+module.exports = class BuyItem extends IgniteBase {
   constructor(
-    name = "transaction",
+    name = "buy_item",
     _sql = {
-      userId: {
-        name: "user_id",
-        label: "userId",
-        type: DataType.VARCHAR,
-      },
       itemId: {
         name: "item_id",
         label: "itemId",
@@ -19,10 +14,7 @@ module.exports = class Transaction extends IgniteBase {
       },
       cartId: { name: "cart_id", label: "cartId", type: DataType.VARCHAR },
       price: { type: DataType.DOUBLE },
-      timeBuy: { type: DataType.VARCHAR },
-      purchaseDay: { type: DataType.VARCHAR },
-      status: { type: DataType.VARCHAR },
-      count: { type: DataType.INT },
+      qty: { type: DataType.INT },
     }
   ) {
     /* required super call */
@@ -43,11 +35,7 @@ module.exports = class Transaction extends IgniteBase {
     await this.insert([
       {
         id: "1",
-        data: ["1", "1", "1", 45000, "00000", "00000", "1", 5],
-      },
-      {
-        id: "2",
-        data: ["1", "2", "1", 65000, "00000", "00000", "1", 1],
+        data: ["1.0", "1", 22, 2],
       },
     ]);
   }
